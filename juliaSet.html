@@ -1,0 +1,41 @@
+<canvas id="fractal-canvas"></canvas>
+<script>
+  const canvas = document.getElementById('fractal-canvas');
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width = window.innerWidth;
+  const height = canvas.height = window.innerHeight;
+  
+  const c_real = -0.7;
+  const c_imag = 0.27015;
+  
+  function drawFractal() {
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        let z_real = x / width * 4 - 2;
+        let z_imag = y / height * 4 - 2;
+        let iterations = 0;
+        
+        while (iterations < 100) {
+          let z_real_squared = z_real * z_real;
+          let z_imag_squared = z_imag * z_imag;
+          
+          if (z_real_squared + z_imag_squared > 4) {
+            break;
+          }
+          
+          let z_imag_temp = 2 * z_real * z_imag + c_imag;
+          z_real = z_real_squared - z_imag_squared + c_real;
+          z_imag = z_imag_temp;
+          
+          iterations++;
+        }
+        
+        let color = iterations / 100 * 255;
+        ctx.fillStyle = `rgb(${color}, ${color}, ${color})`;
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+  }
+  
+  drawFractal();
+</script>
